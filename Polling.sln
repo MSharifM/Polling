@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polling", "Polling\Polling.csproj", "{ACCD5AFF-D9AB-4300-B3ED-46D009CFD99F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polling.Datalayer", "Polling.Datalayer\Polling.Datalayer.csproj", "{839A1623-F48F-438E-8FCF-035FC402DE51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polling.Core", "Polling.Core\Polling.Core.csproj", "{CED1D9C0-9458-46C3-9BE6-538D7BB97458}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{ACCD5AFF-D9AB-4300-B3ED-46D009CFD99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACCD5AFF-D9AB-4300-B3ED-46D009CFD99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACCD5AFF-D9AB-4300-B3ED-46D009CFD99F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{839A1623-F48F-438E-8FCF-035FC402DE51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839A1623-F48F-438E-8FCF-035FC402DE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839A1623-F48F-438E-8FCF-035FC402DE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839A1623-F48F-438E-8FCF-035FC402DE51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CED1D9C0-9458-46C3-9BE6-538D7BB97458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED1D9C0-9458-46C3-9BE6-538D7BB97458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED1D9C0-9458-46C3-9BE6-538D7BB97458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED1D9C0-9458-46C3-9BE6-538D7BB97458}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

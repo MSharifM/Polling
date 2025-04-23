@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Template\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="Sequrity\" />
+    <Folder Include="Senders\" />
+    <Folder Include="Genarator\" />
+    <Folder Include="Convertor\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Polling.Datalayer\Polling.Datalayer.csproj" />
+  </ItemGroup>
+
+</Project>
