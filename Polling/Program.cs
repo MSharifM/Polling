@@ -1,11 +1,34 @@
+using Microsoft.EntityFrameworkCore;
+using Polling.Core.Services;
+using Polling.Core.Services.Interfaces;
+using Polling.Datalayer.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMvc(options =>
+{
+    options.EnableEndpointRouting = false;
+});
+
+
+#region DataBase Context
+
+builder.Services.AddDbContext<PollingContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("PollingConnection"));
+});
+
+#endregion
+
+#region IoC
+
+builder.Services.AddTransient<IUserServices, UserService>();
+
+#endregion
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
