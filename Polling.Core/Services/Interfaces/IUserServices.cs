@@ -11,5 +11,6 @@ namespace Polling.Core.Services.Interfaces
     public interface IUserServices
     {
         Task AddUser(User user);
+        Task<User> LoginUser(LoginViewModel model);
     }
 }

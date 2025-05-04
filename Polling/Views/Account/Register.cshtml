@@ -9,122 +9,125 @@
     <style>
         /* تنظیمات پایه */
         * {
-            box-sizing: border-box;
-            font-family: 'Vazir', Tahoma, sans-serif;
+        box-sizing: border-box;
+        font-family: 'Vazir', Tahoma, sans-serif;
         }
 
         body {
-            background: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            direction: rtl;
+        background: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        direction: rtl;
         }
 
         .signup-container {
-            background: #ffffff;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 400px;
-            width: 100%;
-            transition: box-shadow 0.3s ease;
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        max-width: 400px;
+        width: 100%;
+        transition: box-shadow 0.3s ease;
         }
 
-            .signup-container:hover {
-                box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-            }
+        .signup-container:hover {
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
 
         h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
         }
 
         form {
-            display: flex;
-            flex-direction: column;
+        display: flex;
+        flex-direction: column;
         }
 
         label {
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #555;
-            font-size: 14px;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #555;
+        font-size: 14px;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="tel"],
         input[type="password"] {
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border: 1.8px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.3s ease;
-            outline: none;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1.8px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: border-color 0.3s ease;
+        outline: none;
         }
 
-            input[type="text"]:focus,
-            input[type="email"]:focus,
-            input[type="tel"]:focus,
-            input[type="password"]:focus {
-                border-color: #4a90e2;
-                box-shadow: 0 0 6px #4a90e2aa;
-            }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="password"]:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 6px #4a90e2aa;
+        }
 
         button {
-            background-color: #4a90e2;
-            color: white;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        background-color: #4a90e2;
+        color: white;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
         }
 
-            button:hover {
-                background-color: #357ABD;
-            }
+        button:hover {
+        background-color: #357ABD;
+        }
         /* ریسپانسیو */
 
         .signup-container {
-            padding: 25px 20px;
-            max-width: 100%;
+        padding: 25px 20px;
+        max-width: 100%;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="tel"],
         input[type="password"] {
-            font-size: 14px;
-            padding: 10px 12px;
+        font-size: 14px;
+        padding: 10px 12px;
         }
 
         button {
-            font-size: 15px;
-            padding: 12px;
+        font-size: 15px;
+        padding: 12px;
         }
 
         }
     </style>
 </head>
 <body>
-
     <div class="signup-container">
         <h2>ثبت نام در سایت نظر سنجی</h2>
         <form asp-controller="Account" asp-action="Register" method="post">
             <div asp-validation-summary="ModelOnly"></div>
 
-            <label asp-for="UserName"></label>
-            <input asp-for="UserName" type="text" id="username" name="UserName" placeholder="نام کاربری خود را وارد کنید" />
-            <span asp-validation-for="UserName" class="text-danger"></span>
+            <label asp-for="FullName"></label>
+            <input asp-for="FullName" type="text" id="username" name="Fullname" placeholder="نام کاربری خود را وارد کنید" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+
+            <label asp-for="StudentCode"></label>
+            <input asp-for="StudentCode" type="text" id="username" name="StudentCode" placeholder="شماره دانشجویی  خود را وارد کنید" />
+            <span asp-validation-for="StudentCode" class="text-danger"></span>
 
             <label asp-for="Email"></label>
             <input asp-for="Email" name="Email" placeholder="example@mail.com" />

@@ -1,4 +1,7 @@
-﻿using Polling.Core.Services.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Polling.Core.DTOs.User;
+using Polling.Core.Sequrity;
+using Polling.Core.Services.Interfaces;
 using Polling.Datalayer.Context;
 using Polling.Datalayer.Entities;
 using System;
@@ -24,6 +27,14 @@ namespace Polling.Core.Services
         {
             await _db.Users.AddAsync(user);
             await _db.SaveChangesAsync();
+        }
+        
+        public async Task<User> LoginUser(LoginViewModel model)
+        {
+            string hashPassword = PasswordHelper.EncodePasswordMd5(model.Password);
+
+            User user = await _db.Users.SingleOrDefaultAsync(u => u.StudentCode == model.StudentCode && u.Password == hashPassword);
+            return user;
         }
 
         #endregion
