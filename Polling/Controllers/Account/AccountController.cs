@@ -59,17 +59,20 @@ namespace Polling.Controllers.Account
         #region Login
 
         [Route("/Login")]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
+            ViewData["returnUrl"] = returnUrl;
             return View();
         }
 
         [Route("/Login")]
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model , string returnUrl = null)
         {
             if (!ModelState.IsValid)
                 return View(model);
+
+            ViewData["returnUrl"] = returnUrl;
 
             var user = await _userServices.LoginUser(model);
 
@@ -93,6 +96,10 @@ namespace Polling.Controllers.Account
                     HttpContext.SignInAsync(principal, properties);
 
                     ViewBag.IsSuccess = true;
+                    if (returnUrl != null && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
                     return Redirect("Home");
                 }
                 //else

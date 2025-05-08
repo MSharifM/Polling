@@ -9,7 +9,7 @@
 {
     <span class="text-danger">@ViewBag.Error</span>
 }
-<form asp-action="Login" method="post" class="login-form" style="max-width: 400px; margin: auto;">
+<form asp-action="Login" asp-route-returnUrl="@ViewData["returnUrl"]" method="post" class="login-form" style="max-width: 400px; margin: auto;">
 
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 

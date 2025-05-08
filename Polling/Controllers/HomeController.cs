@@ -1,8 +1,10 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Polling.Models;
 
 namespace Polling.Controllers;
+
 
 public class HomeController : Controller
 {
@@ -18,6 +20,7 @@ public class HomeController : Controller
         return View();
     }
 
+    [Authorize]
     public IActionResult Privacy()
     {
         return View();
