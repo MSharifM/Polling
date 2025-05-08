@@ -61,6 +61,9 @@ namespace Polling.Controllers.Account
         [Route("/Login")]
         public async Task<IActionResult> Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated)
+                ViewBag.IsAuthenticated = true;
+
             ViewData["returnUrl"] = returnUrl;
             return View();
         }
