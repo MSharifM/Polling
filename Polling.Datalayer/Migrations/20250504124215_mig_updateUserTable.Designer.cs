@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Polling.Datalayer.Context;
 
@@ -11,9 +12,11 @@ using Polling.Datalayer.Context;
 namespace Polling.Datalayer.Migrations
 {
     [DbContext(typeof(PollingContext))]
-    partial class PollingContextModelSnapshot : ModelSnapshot
+    [Migration("20250504124215_mig_updateUserTable")]
+    partial class mig_updateUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

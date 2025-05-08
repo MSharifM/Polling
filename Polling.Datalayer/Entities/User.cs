@@ -17,10 +17,10 @@ namespace Polling.Datalayer.Entities
         [Key]
         public int UserId { get; set; }
 
-        [Display(Name = "نام کاربری")]
+        [Display(Name = "نام و نام خانوادگی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد.")]
-        public string UserName { get; set; }
+        public string FullName { get; set; }
 
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
@@ -34,9 +34,17 @@ namespace Polling.Datalayer.Entities
         [Phone(ErrorMessage = "شماره موبایل نامعتبر")]
         public string Phone { get; set; }
 
+        [Display(Name = "شماره دانشجویی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
+        [MaxLength(8, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد.")]
+        [MinLength(7, ErrorMessage = "{0} نمی تواند کمتر از {1} کاراکتر باشد.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "شماره دانشجویی باید فقط شامل عدد باشد.")]
+        public string StudentCode { get; set; }
+
         [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
         [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد.")]
+        [MinLength(6, ErrorMessage = "{0} نمی تواند کمتر از {1} کاراکتر باشد.")]
         public string Password { get; set; }
 
         [Display(Name = "کد فعال سازی")]

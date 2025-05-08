@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Polling.Core.Services;
 using Polling.Core.Services.Interfaces;
@@ -11,6 +12,21 @@ builder.Services.AddMvc(options =>
     options.EnableEndpointRouting = false;
 });
 
+#region Authentication
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie(option =>
+{
+    option.LoginPath = "/Login";
+    option.LogoutPath = "/Logout";
+    option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+});
+
+#endregion
 
 #region DataBase Context
 
@@ -38,6 +54,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseMvc(endpoints =>
 {
