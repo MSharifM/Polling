@@ -12,5 +12,6 @@ namespace Polling.Core.Services.Interfaces
     {
         Task AddUser(User user);
         Task<User> LoginUser(LoginViewModel model);
+        Task<ShowInformationForUsrePanelViewModel> GetUserInformationByName(string Name);
     }
 }

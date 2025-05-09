@@ -38,5 +38,23 @@ namespace Polling.Core.Services
         }
 
         #endregion
+
+        #region UserPanel
+
+        public async Task<ShowInformationForUsrePanelViewModel> GetUserInformationByName(string Name)
+        {
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.FullName == Name);
+            var result = new ShowInformationForUsrePanelViewModel()
+            {
+                Name = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone,
+                UserAvatar = user.UserAvatar
+            };
+
+            return result;
+        }
+
+        #endregion
     }
 }

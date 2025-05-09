@@ -25,4 +25,8 @@
     <ProjectReference Include="..\Polling.Datalayer\Polling.Datalayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UserAvatar\" />
+  </ItemGroup>
+
 </Project>
