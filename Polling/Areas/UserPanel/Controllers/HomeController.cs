@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Polling.Core.DTOs.User;
 using Polling.Core.Services.Interfaces;
 
 namespace Polling.Areas.UserPanel.Controllers
 {
-    [Area("UserPanel")]
     [Authorize]
     public class HomeController : Controller
     {
@@ -15,20 +15,49 @@ namespace Polling.Areas.UserPanel.Controllers
             _userServices = userServices;
         }
 
+        [Area("UserPanel")]
         public async Task<IActionResult> Index()
         {
-            var user = await _userServices.GetUserInformationByName(User.Identity.Name);
+            var user = await _userServices.GetUserInformationForUserPanel(User.Identity.Name);
             return View(user);
         }
 
-        public async Task<IActionResult> EditProfile()
+        [Route("UserPanel/EditAvatar/")]
+        public async Task<IActionResult> EditAvatar()
         {
-            return View();
+            var user = await _userServices.GetUserInformationForEditAvatar(User.Identity.Name);
+            return View("/Areas/UserPanel/Views/Home/EditAvatar.cshtml" , user);
         }
 
+        [HttpPost]
+        [Route("UserPanel/EditAvatar")]
+        public async Task<IActionResult> EditAvatar(EditAvatarViewModel model)
+        {
+            if (model.Avatar == null)
+                return Redirect("/UserPanel");
+
+            await _userServices.EditAvatar(model, User.Identity.Name);
+            return Redirect("/UserPanel");
+        }
+
+        [Route("UserPanel/ChangePassword/")]
         public async Task<IActionResult> ChangePassword()
         {
-            return View();
+            return View("/Areas/UserPanel/Views/Home/ChangePassword.cshtml");
+        }
+
+        [HttpPost]
+        [Route("UserPanel/ChangePassword/")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("/Areas/UserPanel/Views/Home/ChangePassword.cshtml" , model);
+
+            if (await _userServices.EditPassword(User.Identity.Name, model))
+                return Redirect("/UserPanel");
+
+            ModelState.AddModelError("Error", "عملیات موفق نبود.");
+            return View("/Areas/UserPanel/Views/Home/ChangePassword.cshtml", model);
         }
 
         public async Task<IActionResult> ChangeEmail()

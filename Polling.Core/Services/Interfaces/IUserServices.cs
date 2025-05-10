@@ -10,8 +10,12 @@ namespace Polling.Core.Services.Interfaces
 {
     public interface IUserServices
     {
+        Task<User> GetUserByName(string name);
         Task AddUser(User user);
         Task<User> LoginUser(LoginViewModel model);
-        Task<ShowInformationForUsrePanelViewModel> GetUserInformationByName(string Name);
+        Task<ShowInformationForUsrePanelViewModel> GetUserInformationForUserPanel(string name);
+        Task<EditAvatarViewModel> GetUserInformationForEditAvatar(string name);
+        Task EditAvatar(EditAvatarViewModel model , string name);
+        Task<bool> EditPassword(string name , ChangePasswordViewModel model);
     }
 }
