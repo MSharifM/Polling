@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace Polling.Datalayer.Entities
     {
         public User()
         {
-
+            UserVotes = new List<UserVote>();
         }
 
         [Key]
         public int UserId { get; set; }
+
+        public int GroupId { get; set; }
 
         [Display(Name = "نام و نام خانوادگی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید.")]
@@ -59,8 +62,17 @@ namespace Polling.Datalayer.Entities
         public string UserAvatar { get; set; }
 
         [Display(Name = "تاریخ ثبت نام")]
-        public DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-        public bool IsDelete { get; set; }
+        public bool IsDelete { get; set; } = false;
+
+
+
+        #region Relations
+
+        public virtual Group Group { get; set; }
+        public virtual List<UserVote> UserVotes { get; set; }
+
+        #endregion
     }
 }

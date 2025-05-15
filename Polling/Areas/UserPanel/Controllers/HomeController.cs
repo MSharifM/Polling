@@ -60,9 +60,6 @@ namespace Polling.Areas.UserPanel.Controllers
             return View("/Areas/UserPanel/Views/Home/ChangePassword.cshtml", model);
         }
 
-        public async Task<IActionResult> ChangeEmail()
-        {
-            return View();
-        }
+        
     }
 }
