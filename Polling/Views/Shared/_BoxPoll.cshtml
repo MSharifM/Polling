@@ -1,0 +1,41 @@
+﻿@model Polling.Core.DTOs.User.ListPollsForShowToUserViewModel
+
+<thead>
+    <tr>
+        <th>عنوان نظرسنجی</th>
+        <th>تاریخ ایجاد</th>
+        <th>تاریخ پایان</th>
+        <th>وضعیت شرکت</th>
+        <th>وضعیت فعال بودن</th>
+        <th>عملیات</th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td>@Model.Title</td>
+        <td>@Model.CreateDate.ToString("yyyy/MM/dd")</td>
+        @if (Model.EndDate == null)
+        {
+            <td> - </td>
+        }
+        else
+        {
+            <td>@Model.EndDate?.ToString("yyyy/MM/dd")</td>
+        }
+        <td>
+            <span class="sticker @(Model.Participated ? "sticker-participated" : "sticker-not-participated")">
+                @(Model.Participated ? "شرکت کرده" : "شرکت نکرده")
+            </span>
+        </td>
+        <td>
+            <span class="sticker @(Model.IsActive ? "sticker-active" : "sticker-inactive")">
+                @(Model.IsActive ? "فعال" : "غیرفعال")
+            </span>
+        </td>
+        <td>
+            <a asp-action="ShowPolls?voteId=@Model.VoteId">
+                شرکت در نظرسنجی
+            </a>
+        </td>
+    </tr>
+</tbody>

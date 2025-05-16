@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Polling.Core.DTOs.User;
 using Polling.Core.Genarator;
 using Polling.Core.Sequrity;
@@ -28,6 +29,12 @@ namespace Polling.Core.Services
         public async Task<User> GetUserByName(string name)
         {
             return await _db.Users.SingleOrDefaultAsync(u => u.FullName == name);
+        }
+
+        public async Task<int> GetUserGroup(string name)
+        {
+            var user = await GetUserByName(name);
+            return user.GroupId;   
         }
 
         public async Task AddUser(User user)
@@ -115,10 +122,10 @@ namespace Polling.Core.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task<bool> EditPassword(string name , ChangePasswordViewModel model)
+        public async Task<bool> EditPassword(string name, ChangePasswordViewModel model)
         {
             var user = await GetUserByName(name);
-            if(PasswordHelper.EncodePasswordMd5(model.OldPassword) == user.Password)
+            if (PasswordHelper.EncodePasswordMd5(model.OldPassword) == user.Password)
             {
                 user.Password = PasswordHelper.EncodePasswordMd5(model.NewPassword);
                 _db.Users.Update(user);
@@ -127,6 +134,68 @@ namespace Polling.Core.Services
             }
 
             return false;
+        }
+
+
+        #endregion
+
+        #region Polling
+
+        public async Task<Tuple<List<ListPollsForShowToUserViewModel> , int>> GetPollsToShowForUser(int userGroup, int pageId = 1
+            , string? filter = null, string getType = "all", string orderByType = "date", int take = 0)
+        {
+            if (take == 0)
+                take = 8;
+
+            IQueryable<Vote> result = _db.Votes;
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                result = result.Where(c => c.Title.Contains(filter));
+            }
+
+            switch (getType)
+            {
+                case "all":
+                    break;
+                case "isactive":
+                    result = result.Where(c => c.IsActive);
+                    break;
+                case "participated":
+                   
+                    break;
+            }
+
+            switch (orderByType)
+            {
+                case "date":
+                    result = result.OrderByDescending(c => c.CreateDate);
+                    break;
+                case "enddate":
+                    result = result.OrderByDescending(c => c.EndDate);
+                    break;
+            }
+
+            result = result.Include(c => c.Groups).Where(v => v.Groups.Any(g => g.GroupId == userGroup));
+
+            int skip = (pageId - 1) * take;
+
+            int pageCount = result.Select(v => new ListPollsForShowToUserViewModel()
+            {
+                VoteId = v.VoteId
+            }).Count() / take;
+
+            var query = await result.Select(v => new ListPollsForShowToUserViewModel()
+            {
+                CreateDate = v.CreateDate,
+                EndDate = v.EndDate,
+                IsActive = v.IsActive,
+                Text = v.Text,
+                Title = v.Title,
+                VoteId = v.VoteId
+            }).Skip(skip).Take(take).ToListAsync();
+
+            return Tuple.Create(query , pageCount);
         }
 
 

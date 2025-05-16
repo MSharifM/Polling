@@ -46,7 +46,8 @@ namespace Polling.Controllers.Account
                 IsActive = false,
                 IsDelete = false,
                 UserAvatar = "Default.jpg",
-                RegisterDate = DateTime.Now
+                RegisterDate = DateTime.Now,
+                GroupId = model.GroupId
             };
 
            await _userServices.AddUser(user);

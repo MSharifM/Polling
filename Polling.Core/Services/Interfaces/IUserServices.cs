@@ -10,6 +10,8 @@ namespace Polling.Core.Services.Interfaces
 {
     public interface IUserServices
     {
+        #region Account
+
         Task<User> GetUserByName(string name);
         Task AddUser(User user);
         Task<User> LoginUser(LoginViewModel model);
@@ -17,5 +19,15 @@ namespace Polling.Core.Services.Interfaces
         Task<EditAvatarViewModel> GetUserInformationForEditAvatar(string name);
         Task EditAvatar(EditAvatarViewModel model , string name);
         Task<bool> EditPassword(string name , ChangePasswordViewModel model);
+        Task<int> GetUserGroup(string name);
+
+        #endregion
+
+        #region Polling
+
+        Task<Tuple<List<ListPollsForShowToUserViewModel> , int>> GetPollsToShowForUser(int userGroup , int pageId = 1
+            , string? filter = null , string getType = "all", string orderByType = "date", int take = 0);
+
+        #endregion
     }
 }

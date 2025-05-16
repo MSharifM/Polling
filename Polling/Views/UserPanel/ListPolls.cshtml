@@ -1,0 +1,262 @@
+﻿@model Tuple<List<Polling.Core.DTOs.User.ListPollsForShowToUserViewModel> , int>
+@{
+    ViewData["Title"] = "لیست نظرسنجی‌ها";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .survey-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .filters-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        .apply-filters {
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+            .apply-filters:hover {
+                background: #3182ce;
+            }
+
+        .survey-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+            .survey-table th {
+                background: #4f46e5;
+                color: white;
+                padding: 15px;
+                text-align: right;
+                font-weight: 500;
+            }
+
+            .survey-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .survey-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .survey-table tr:hover {
+                background-color: #f8fafc;
+            }
+
+        .sticker {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .sticker-active {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .sticker-inactive {
+            background: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .sticker-participated {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+
+        .sticker-not-participated {
+            background: #feebc8;
+            color: #b7791f;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+
+        .page-link {
+            padding: 8px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .page-link:hover {
+                background: #edf2f7;
+            }
+
+            .page-link.active {
+                background: #4f46e5;
+                color: white;
+                border-color: #4f46e5;
+            }
+
+        .action-link {
+            color: #4299e1;
+            text-decoration: none;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+
+            .action-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <div class="survey-container">
+        <div class="page-header">
+            <h1 class="page-title">لیست نظرسنجی‌ها</h1>
+        </div>
+
+        <!-- بخش فیلترها -->
+        <div class="filters-section">
+            <form method="get" asp-action="ListPolls">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">جستجوی عنوان</label>
+                        <input type="text" class="filter" placeholder="عنوان نظرسنجی را جستجو کنید...">
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">فیلتر وضعیت</label>
+                        <select class="filter-select" name="getType">
+                            <option value="all">همه نظرسنجی‌ها</option>
+                            <option value="active">فقط فعال‌ها</option>
+                            <option value="not-participated">شرکت نکرده‌ها</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">مرتب‌سازی بر اساس</label>
+                        <select class="filter-select" name="orderByType">
+                            <option value="created">تاریخ ایجاد</option>
+                            <option value="end">تاریخ پایان</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="apply-filters">اعمال فیلترها</button>
+            </form>
+        </div>
+
+        <!-- جدول نظرسنجی‌ها -->
+        <table class="survey-table">
+            <section class="terms-items">
+                <div class="row">
+                    @foreach (var item in Model.Item1)
+                    {
+                        <partial name="_BoxPoll" model="@item" />
+                    }
+                </div>
+        </table>
+
+        <!-- صفحه‌بندی -->
+        @if (Model.Item2 > 1)
+        {
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+
+                    @for (int i = 1; i <= (int)Model.Item2; i++)
+                    {
+                        <li class="page-item"><a class="page-link" onclick="changePage(@i)" href="#">@i</a></li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</body>
+</html>

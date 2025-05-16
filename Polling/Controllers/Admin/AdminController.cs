@@ -62,7 +62,7 @@ namespace Polling.Controllers.Admin
             }
 
             await _voteService.AddOptions(id, Options);
-            return Redirect("index");
+            return Redirect("Index");
         }
 
     }

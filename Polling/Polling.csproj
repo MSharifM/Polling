@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\UserPanel\Views\Home\" />
     <Folder Include="wwwroot\UserAvatar\" />
   </ItemGroup>
 

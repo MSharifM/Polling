@@ -127,7 +127,12 @@
 
             <label asp-for="StudentCode"></label>
             <input asp-for="StudentCode" type="text" id="username" name="StudentCode" placeholder="شماره دانشجویی  خود را وارد کنید" />
-            <span asp-validation-for="StudentCode" class="text-danger"></span>
+            <span asp-validation-for="StudentCode" class="text-danger">
+
+
+            </span><label asp-for="GroupId"></label>
+            <input asp-for="GroupId" type="text" id="username" name="GroupId" placeholder=" دانشجویی  خود را وارد کنید" />
+            <span asp-validation-for="GroupId" class="text-danger"></span>
 
             <label asp-for="Email"></label>
             <input asp-for="Email" name="Email" placeholder="example@mail.com" />

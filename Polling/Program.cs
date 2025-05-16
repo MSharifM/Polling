@@ -57,14 +57,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
 
-app.UseMvc(endpoints =>
-{
-    endpoints.MapRoute(
-      name: "areas",
-      template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-    );
-    endpoints.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
-});
 
 app.UseRouting();
 

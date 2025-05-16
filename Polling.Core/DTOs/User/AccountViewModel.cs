@@ -63,6 +63,8 @@ namespace Polling.Core.DTOs.User
         [MinLength(6, ErrorMessage = "{0} نمی تواند کمتر از {1} کاراکتر باشد.")]
         [Compare("Password", ErrorMessage = "کلمه عبور  با تکرار آن برابر نیست")]
         public string RePassword { get; set; }
+
+        public int GroupId { get; set; }
     }
 
     public class ForgotPasswordViewModel
