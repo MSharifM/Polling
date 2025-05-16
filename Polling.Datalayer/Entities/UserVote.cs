@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Polling.Datalayer.Entities
 {
@@ -23,8 +18,6 @@ namespace Polling.Datalayer.Entities
         public int VoteId { get; set; }
 
         public int OptionId { get; set; }
-
-        public DateTime VoteDate { get; set; } = DateTime.Now;
 
         #region Relations
 

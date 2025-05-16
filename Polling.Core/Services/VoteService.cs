@@ -60,13 +60,9 @@ namespace Polling.Core.Services
             }).ToListAsync();
         }
 
-        public async Task<Tuple<string, string>> GetVoteInformation(int voteId)
+        public async Task<Vote> GetVoteById(int voteId)
         {
-            var vote = await _db.Votes.FindAsync(voteId);
-            if (vote == null)
-                return null;
-
-            return Tuple.Create(vote.Title, vote.Text);
+            return await _db.Votes.Include(v => v.Groups).Include(v => v.Options).FirstOrDefaultAsync(g => g.VoteId == voteId);
         }
     }
 }

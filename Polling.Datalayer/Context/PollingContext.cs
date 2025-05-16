@@ -42,6 +42,8 @@ namespace Polling.Datalayer.Context
 
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDelete);
             modelBuilder.Entity<Vote>().HasQueryFilter(u => !u.IsDelete);
+            modelBuilder.Entity<Group>().HasQueryFilter(u => !u.IsDelete);
+            modelBuilder.Entity<Option>().HasQueryFilter(u => !u.IsDelete);
 
             base.OnModelCreating(modelBuilder);
         }

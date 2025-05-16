@@ -41,12 +41,12 @@ namespace Polling.Controllers.Admin
 
         public async Task<IActionResult> AddOption(int voteId)
         {
-            var voteInfo = await _voteService.GetVoteInformation(voteId);
-            if (voteInfo == null)
+            var vote = await _voteService.GetVoteById(voteId);
+            if (vote == null)
                 return NotFound();
 
-            ViewData["TitleVote"] = voteInfo.Item1;
-            ViewData["TextVote"] = voteInfo.Item2;
+            ViewData["TitleVote"] = vote.Title;
+            ViewData["TextVote"] = vote.Text;
             TempData["voteId"] = voteId;
             return View();
         }

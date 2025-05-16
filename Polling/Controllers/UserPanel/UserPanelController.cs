@@ -8,11 +8,13 @@ namespace Polling.Controllers.UserPanel
     [Authorize]
     public class UserPanelController : Controller
     {
-        IUserServices _userServices;
+        private IUserServices _userServices;
+        private IVoteService _voteService;
 
-        public UserPanelController(IUserServices userServices)
+        public UserPanelController(IUserServices userServices, IVoteService voteService)
         {
             _userServices = userServices;
+            _voteService = voteService;
         }
 
         #region Account
@@ -69,7 +71,44 @@ namespace Polling.Controllers.UserPanel
 
         public async Task<IActionResult> ShowPolls(int voteId)
         {
-            return View();
+            var vote = await _voteService.GetVoteById(voteId);
+
+            int userGroup = await _userServices.GetUserGroup(User.Identity.Name);
+            if (vote.Groups.Any(g => g.GroupId == userGroup))
+            {
+                TempData["VoteId"] = vote.VoteId;
+                return View(vote);
+            }
+            else
+            {
+                return Redirect("ListPolls");
+            }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitVote(List<int>? selectedOptions, int? selectOption)
+        {
+            var user = await _userServices.GetUserByName(User.Identity.Name);
+
+            if (selectedOptions == null && selectOption == null)
+            {
+                ModelState.AddModelError("Error", "لطفا گزینه ای را انتخاب کنید.");
+                return Redirect("ListPolls");
+
+            }
+            if (selectedOptions != null)
+            {
+                await _userServices.AddUserVote(user.UserId, (int)TempData["VoteId"], selectedOptions);
+            }
+            else
+            {
+                selectedOptions.Clear();
+                selectedOptions.Add((int)selectOption);
+                await _userServices.AddUserVote(user.UserId, (int)TempData["VoteId"], selectedOptions);
+            }
+
+            return Redirect("ListPolls");
+        }
+
     }
 }

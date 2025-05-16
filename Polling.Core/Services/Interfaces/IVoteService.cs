@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Polling.Core.DTOs.Vote;
+using Polling.Datalayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Polling.Core.Services.Interfaces
     {
         Task<List<SelectListItem>> GetAllGroups();
         Task<int> AddVote(CreateVoteViewModel model , List<int> groups);
-        Task<Tuple<string, string>> GetVoteInformation(int voteId);
         Task AddOptions(int voteId, List<CreateOptionViewModel> models);
+        Task<Vote> GetVoteById(int voteId);
     }
 }

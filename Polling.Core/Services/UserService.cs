@@ -162,7 +162,7 @@ namespace Polling.Core.Services
                     result = result.Where(c => c.IsActive);
                     break;
                 case "participated":
-                   
+                    //ToDo check participate
                     break;
             }
 
@@ -196,6 +196,29 @@ namespace Polling.Core.Services
             }).Skip(skip).Take(take).ToListAsync();
 
             return Tuple.Create(query , pageCount);
+        }
+
+        public async Task AddUserVote(int userId, int voteId, List<int> OptionsId)
+        {
+            foreach (var item in OptionsId)
+            {
+                var userVote = new UserVote()
+                {
+                    VoteId = voteId,
+                    UserId = userId,
+                    OptionId = item
+                };
+                await _db.UsersVotes.AddAsync(userVote);
+                var option = await GetOptionById(item);
+                option.Count++;
+                _db.Options.Update(option);
+            }
+                await _db.SaveChangesAsync();
+        }
+
+        public async Task<Option> GetOptionById(int id)
+        {
+            return await _db.Options.FindAsync(id);
         }
 
 

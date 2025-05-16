@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Polling.Datalayer.Entities
 {
@@ -22,6 +17,8 @@ namespace Polling.Datalayer.Entities
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
+        public bool IsDelete { get; set; } = false;
 
         #region Relations
 

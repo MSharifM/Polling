@@ -1,15 +1,6 @@
 ﻿@model Polling.Core.DTOs.User.ListPollsForShowToUserViewModel
 
-<thead>
-    <tr>
-        <th>عنوان نظرسنجی</th>
-        <th>تاریخ ایجاد</th>
-        <th>تاریخ پایان</th>
-        <th>وضعیت شرکت</th>
-        <th>وضعیت فعال بودن</th>
-        <th>عملیات</th>
-    </tr>
-</thead>
+
 <tbody>
     <tr>
         <td>@Model.Title</td>
@@ -33,9 +24,11 @@
             </span>
         </td>
         <td>
-            <a asp-action="ShowPolls?voteId=@Model.VoteId">
-                شرکت در نظرسنجی
-            </a>
+            <button>
+                <a asp-action="ShowPolls" asp-route-voteId="@Model.VoteId">
+                    شرکت در نظرسنجی
+                </a>
+            </button>
         </td>
     </tr>
 </tbody>

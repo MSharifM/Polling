@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Polling.Datalayer.Entities
 {
@@ -20,9 +14,13 @@ namespace Polling.Datalayer.Entities
 
         public int VoteId { get; set; }
 
+        public int Count { get; set; }
+
         [Required]
         [MaxLength(300)]
         public string Text { get; set; }
+
+        public bool IsDelete { get; set; } = false;
 
         #region Relations
 
