@@ -1,0 +1,270 @@
+﻿@model List<Polling.Core.DTOs.Vote.CreateOptionViewModel>
+@{
+    ViewData["Title"] = "مدیریت گزینه‌های نظرسنجی";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .vote-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+
+        .vote-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .vote-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .vote-description {
+            font-size: 16px;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .options-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .option-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            margin-left: 10px;
+            font-size: 15px;
+        }
+
+        .remove-btn {
+            background: #feb2b2;
+            color: #9b2c2c;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+            .remove-btn:hover {
+                background: #fc8181;
+            }
+
+        .add-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .add-btn:hover {
+                background: #3182ce;
+            }
+
+        .submit-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 25px;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+            .submit-btn:hover {
+                background: #38a169;
+            }
+
+        .text-danger {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .vote-info {
+            background: #ebf8ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-right: 3px solid #4299e1;
+        }
+
+        .vote-info-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+    <div class="options-container">
+        <div class="header">
+            <p>گزینه‌های مورد نظر را وارد کرده و در پایان ثبت کنید</p>
+        </div>
+        <!-- نمایش عنوان و متن نظرسنجی -->
+        <div class="vote-info">
+            <div class="vote-info-title">عنوان نظرسنجی:</div>
+            <div class="vote-title">@ViewData["TitleVote"]</div>
+
+            <div class="vote-info-title" style="margin-top: 15px;">توضیحات نظرسنجی:</div>
+            <div class="vote-description">@ViewData["TextVote"]</div>
+        </div>
+
+        <form id="optionsForm" asp-action="AddOption" method="post">
+            <div id="optionsList">
+                <!-- گزینه اول -->
+                <div class="option-item" data-index="0">
+                    <input type="text" 
+                           name="Options[0].Text" 
+                           class="option-input" 
+                           placeholder="متن گزینه را وارد کنید"
+                           maxlength="300"
+                           required>
+                    <span class="text-danger" data-valmsg-for="Options[0].Text" data-valmsg-replace="true"></span>
+                </div>
+                <div class="option-item" data-index="0">
+                    <input type="text"
+                           name="Options[1].Text"
+                           class="option-input"
+                           placeholder="متن گزینه را وارد کنید"
+                           maxlength="300"
+                           required>
+                    <span class="text-danger" data-valmsg-for="Options[1].Text" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            
+            <button type="button" class="add-btn" onclick="addNewOption()">
+                + افزودن گزینه جدید
+            </button>
+            
+            <button type="submit" class="submit-btn">ثبت گزینه‌ها</button>
+        </form>
+    </div>
+
+    <script>
+        let optionIndex = 2;
+        
+        function addNewOption() {
+            const optionsList = document.getElementById('optionsList');
+            
+            const newOption = document.createElement('div');
+            newOption.className = 'option-item';
+            newOption.dataset.index = optionIndex;
+            
+            newOption.innerHTML = `
+                <input type="text" 
+                       name="Options[${optionIndex}].Text" 
+                       class="option-input" 
+                       placeholder="متن گزینه را وارد کنید"
+                       maxlength="300"
+                       required>
+                <button type="button" class="remove-btn" onclick="removeOption(this)">حذف</button>
+                <span class="text-danger" data-valmsg-for="Options[${optionIndex}].Text" data-valmsg-replace="true"></span>
+            `;
+            
+            optionsList.appendChild(newOption);
+            optionIndex++;
+        }
+        
+        function removeOption(button) {
+            const optionItem = button.closest('.option-item');
+            optionItem.remove();
+            
+            // بازنشانی اندیس‌ها
+            const allOptions = document.querySelectorAll('.option-item');
+            allOptions.forEach((item, index) => {
+                item.dataset.index = index;
+                const input = item.querySelector('input');
+                input.name = `Options[${index}].Text`;
+                
+                const errorSpan = item.querySelector('.text-danger');
+                errorSpan.setAttribute('data-valmsg-for', `Options[${index}].Text`);
+            });
+            
+            optionIndex = allOptions.length;
+        }
+        
+        // اعتبارسنجی فرم قبل از ارسال
+        document.getElementById('optionsForm').addEventListener('submit', function(e) {
+            const inputs = document.querySelectorAll('.option-input');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    const errorSpan = input.nextElementSibling.nextElementSibling;
+                    errorSpan.textContent = 'لطفاً متن گزینه را وارد کنید';
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('لطفاً تمام گزینه‌ها را پر کنید');
+            }
+        });
+    </script>
+</body>
+</html>

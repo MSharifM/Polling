@@ -35,7 +35,7 @@ namespace Polling.Datalayer.Entities
 
         public bool IsDelete { get; set; } = false;
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
 
         public bool AllowMultipleSelection { get; set; } = true;
 

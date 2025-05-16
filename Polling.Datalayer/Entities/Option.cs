@@ -21,6 +21,7 @@ namespace Polling.Datalayer.Entities
         public int VoteId { get; set; }
 
         [Required]
+        [MaxLength(300)]
         public string Text { get; set; }
 
         #region Relations
