@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Polling.Core.DTOs.Vote;
 using Polling.Core.Services.Interfaces;
 
@@ -14,10 +13,14 @@ namespace Polling.Controllers.Admin
             _voteService = voteService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageId = 1, string? filter = null, string getType = "all", string orderByType = "date")
         {
-            return View();
+            var result = await _voteService.GetPollsToShowForUser(pageId, filter, getType, orderByType, 8);
+
+            return View(result);
         }
+
+        #region Create New Vote
 
         public async Task<IActionResult> CreateVote()
         {
@@ -65,5 +68,46 @@ namespace Polling.Controllers.Admin
             return Redirect("Index");
         }
 
+        #endregion
+
+        public async Task<IActionResult> ShowPoll(int voteId)
+        {
+            var vote = await _voteService.GetVoteDetailsForAdmin(voteId);
+            if(vote == null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.Delete = false;
+
+            return View(vote);
+        }
+
+        public async Task<IActionResult> DeletePoll(int voteId)
+        {
+            var vote = await _voteService.GetVoteDetailsForAdmin(voteId);
+            if (vote == null)
+            {
+                return RedirectToAction("Index");
+            }
+            TempData["voteId"] = voteId;
+            ViewBag.Delete = true;
+
+            return View("ShowPoll" , vote);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePoll()
+        {
+            int voteId = (int)TempData["voteid"];
+
+            var vote = await _voteService.GetVoteById(voteId);
+            if (vote == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            await _voteService.DeleteVote(voteId);
+            return RedirectToAction("Index");
+        }
     }
 }

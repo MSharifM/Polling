@@ -1,0 +1,30 @@
+﻿@model Polling.Core.DTOs.Admin.ListPollsForShowToAdmin
+
+
+<tbody>
+    <tr>
+        <td>@Model.Title</td>
+        <td>@Model.CreateDate.ToString("yyyy/MM/dd")</td>
+        @if (Model.EndDate == null)
+        {
+            <td> - </td>
+        }
+        else
+        {
+            <td>@Model.EndDate?.ToString("yyyy/MM/dd")</td>
+        }
+        <td>
+            <span class="sticker @(Model.IsActive ? "sticker-active" : "sticker-inactive")">
+                @(Model.IsActive ? "فعال" : "غیرفعال")
+            </span>
+        </td>
+        <td>
+            <a asp-action="ShowPoll" asp-route-voteId="@Model.VoteId" class="btn btn-outline btn-success">
+                مشاهده نتیجه نظرسنجی
+            </a>
+            <a asp-action="DeletePoll" asp-route-voteId="@Model.VoteId" class="btn btn-outline btn-danger">
+                حذف
+            </a>
+        </td>
+    </tr>
+</tbody>

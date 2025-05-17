@@ -158,7 +158,7 @@ namespace Polling.Core.Services
             {
                 case "all":
                     break;
-                case "isactive":
+                case "active":
                     result = result.Where(c => c.IsActive);
                     break;
                 case "participated":

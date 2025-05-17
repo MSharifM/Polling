@@ -1,0 +1,333 @@
+﻿@model Polling.Core.DTOs.Admin.VoteDetailsViewModel
+@{
+    if (ViewBag.Delete)
+    {
+        ViewData["Title"] = "حذف نظرسنجی";
+    }
+    else
+    {
+        ViewBag.Delete = false;
+    }
+    ViewData["Title"] = "نتایج نظرسنجی";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .survey-info {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            width: 150px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-ended {
+            background: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .results-section, .participants-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .option-item {
+            margin-bottom: 15px;
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .option-text {
+            font-weight: 500;
+        }
+
+        .option-votes {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background: #edf2f7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4f46e5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .participants-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+            .participants-table th {
+                background: #4f46e5;
+                color: white;
+                padding: 12px 15px;
+                text-align: right;
+                font-weight: 500;
+            }
+
+            .participants-table td {
+                padding: 10px 15px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .participants-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .participants-table tr:hover {
+                background-color: #f8fafc;
+            }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .back-link:hover {
+                text-decoration: underline;
+            }
+
+        .total-votes {
+            background: #ebf8ff;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        @if (ViewBag.Delete)
+        {
+            <form asp-action="DeletePoll" method="post">
+                <button type="submit" class="btn btn-outline-danger">
+                    آیا از حذف این نظر سنجی مطمئن هستید؟
+                </button>
+            </form>
+        }
+
+        <div class="admin-header">
+            <h1 class="admin-title">نتایج نظرسنجی</h1>
+        </div>
+
+        <!-- اطلاعات کلی نظرسنجی -->
+        <div class="survey-info">
+            <div class="info-row">
+                <div class="info-label">عنوان نظرسنجی:</div>
+                <div class="info-value">@Model.Title</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">توضیحات:</div>
+                <div class="info-value">@Model.Text</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">تاریخ ایجاد:</div>
+                <div class="info-value">@Model.CreateDate.ToString("yyyy/MM/dd HH:mm")</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">تاریخ پایان:</div>
+                <div class="info-value">@Model.EndDate?.ToString("yyyy/MM/dd HH:mm")</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">وضعیت:</div>
+                <div class="info-value">
+                    <span class="status-badge @(Model.IsActive ? "status-active" : "status-ended")">
+                        @(Model.IsActive ? "فعال" : "پایان یافته")
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="info-row">
+                <div class="info-label">تعداد کل آراء:</div>
+                <div id="voteCount" class="info-value"> رأی</div>
+            </div>
+        </div>
+
+        <!-- نتایج گزینه‌ها -->
+        <div class="results-section">
+            <h2 class="section-title">نتایج گزینه‌ها</h2>
+
+            @foreach (var option in Model.OptionInfos)
+            {
+                <div class="option-item">
+                    <div class="option-header">
+                        <span class="option-text">@option.Text</span>
+                        <span class="option-votes">@option.Count رأی </span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: @option.Count">
+                            @option.Count
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- لیست شرکت‌کنندگان -->
+        <div class="participants-section">
+            <h2 class="section-title">لیست شرکت‌کنندگان</h2>
+
+
+            @if (Model.UserVotes.Any())
+            {
+                <table class="participants-table">
+                    <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>نام کاربر</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var distinctUsers = Model.UserVotes.GroupBy(u => u.UserFullName)
+                            .Select(g => g.First())
+                            .ToList();
+                            int row = 1;
+                        }
+                        @foreach (var participant in distinctUsers)
+                        {
+                            <tr>
+                                <td>@row</td>
+                                <td>@participant.UserFullName</td>
+                            </tr>
+                            row++;
+                        }
+
+                        @* @foreach (var participant in Model.UserVotes)
+                        {
+                            <tr>
+                                <td>@(Model.UserVotes.IndexOf(participant) + 1)</td>
+                                <td>@participant.UserFullName</td>
+                            </tr>
+                        }*@
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>هیچ کاربری در این نظرسنجی شرکت نکرده است.</p>
+            }
+        </div>
+
+        <a asp-controller="Admin" asp-action="Index" class="back-link">
+            &larr; بازگشت به لیست نظرسنجی‌ها
+        </a>
+    </div>
+</body>
+</html>
+@{
+    int count = Model.UserVotes.GroupBy(u => u.UserFullName).Count();
+}
+<script>
+    (function(){
+        var row = @count;
+        document.getElementById('voteCount').innerText = row;
+    })();
+</script>

@@ -1,4 +1,4 @@
-﻿@model Tuple<List<Polling.Core.DTOs.User.ListPollsForShowToUserViewModel> , int>
+﻿@model Tuple<List<Polling.Core.DTOs.Admin.ListPollsForShowToAdmin> , int>
 @{
     ViewData["Title"] = "لیست نظرسنجی‌ها";
 }
@@ -201,10 +201,11 @@
         <div class="page-header">
             <h1 class="page-title">لیست نظرسنجی‌ها</h1>
         </div>
+    <a asp-action="CreateVote" class="btn col-2 btn-outline btn-success">افزودن نظرسنجی جدید</a>
 
         <!-- بخش فیلترها -->
         <div class="filters-section">
-            <form method="get" asp-action="ListPolls">
+            <form method="get" asp-action="Index">
                 <div class="filter-row">
                     <div class="filter-group">
                         <label class="filter-label">جستجوی عنوان</label>
@@ -238,7 +239,7 @@
                 <th>عنوان نظرسنجی</th>
                 <th>تاریخ ایجاد</th>
                 <th>تاریخ پایان</th>
-                <th>وضعیت شرکت</th>
+                <th>تعداد نظرات ثبت شده</th>
                 <th>وضعیت فعال بودن</th>
                 <th>عملیات</th>
             </tr>
@@ -249,7 +250,7 @@
                 <div class="row">
                     @foreach (var item in Model.Item1)
                     {
-                        <partial name="_BoxPoll" model="@item" />
+                        <partial name="_BoxPollForAdmin" model="@item" />
                     }
                 </div>
         </table>
