@@ -1,0 +1,263 @@
+﻿@using Polling.Core.DTOs.Admin
+@model Tuple<List<ListUsersForAdminViewModel> , int>
+@{
+    ViewData["Title"] = "لیست کاربران";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .add-user-btn {
+            background: #4f46e5;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+            .add-user-btn:hover {
+                background: #4338ca;
+            }
+
+        .search-box {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+            .search-btn:hover {
+                background: #4338ca;
+            }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+            .users-table th {
+                background: #4f46e5;
+                color: white;
+                padding: 15px;
+                text-align: right;
+                font-weight: 500;
+            }
+
+            .users-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .users-table tr:last-child td {
+                border-bottom: none;
+            }
+
+            .users-table tr:hover {
+                background-color: #f8fafc;
+            }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background: #4299e1;
+            color: white;
+        }
+
+            .edit-btn:hover {
+                background: #3182ce;
+            }
+
+        .delete-btn {
+            background: #f56565;
+            color: white;
+        }
+
+            .delete-btn:hover {
+                background: #e53e3e;
+            }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+
+        .page-link {
+            padding: 8px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .page-link:hover {
+                background: #edf2f7;
+            }
+
+            .page-link.active {
+                background: #4f46e5;
+                color: white;
+                border-color: #4f46e5;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">لیست کاربران</h1>
+            <a asp-action="AddUser" class="add-user-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                افزودن کاربر جدید
+            </a>
+        </div>
+
+        <!-- فیلتر جستجو -->
+        <form method="get" asp-action="ListUsers" class="search-box">
+            <input type="text" name="filter" class="search-input" placeholder="جستجوی کاربران بر اساس نام..." value="@ViewBag.SearchQuery">
+            <button type="submit" class="search-btn">جستجو</button>
+        </form>
+
+        <!-- جدول کاربران -->
+        <table class="users-table">
+            <thead>
+                <tr>
+                    <th>نام کامل</th>
+                    <th>شماره موبایل</th>
+                    <th>ایمیل</th>
+                    <th>کد دانشجویی</th>
+                    <th>رشته تحصیلی</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Item1)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.Phone</td>
+                        <td>@user.Email</td>
+                        <td>@user.StudentCode</td>
+                        <td>@user.Group</td>
+                        <td>
+                            <div class="action-btns">
+                                <a href="@Url.Action("Edit", new { id = user.UserId })" class="action-btn edit-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                    </svg>
+                                    ویرایش
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = user.UserId })" class="action-btn delete-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    </svg>
+                                    حذف
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        
+        <!-- صفحه‌بندی -->
+        @if (Model.Item2 > 1)
+        {
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+
+                    @for (int i = 1; i <= (int)Model.Item2; i++)
+                    {
+                        <li class="page-item"><a class="page-link" onclick="changePage(@i)" href="ListUsers">@i</a></li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>
+</body>
+</html>

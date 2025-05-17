@@ -41,6 +41,7 @@ builder.Services.AddDbContext<PollingContext>(option =>
 
 builder.Services.AddTransient<IUserServices, UserService>();
 builder.Services.AddTransient<IVoteService, VoteService>();
+builder.Services.AddTransient<IAdminService, AdminService>();
 
 #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Polling.Core.DTOs.User;
 using Polling.Core.DTOs.Vote;
 using Polling.Core.Services.Interfaces;
 
@@ -7,10 +8,12 @@ namespace Polling.Controllers.Admin
     public class AdminController : Controller
     {
         private IVoteService _voteService;
+        private IAdminService _adminService;
 
-        public AdminController(IVoteService voteService)
+        public AdminController(IVoteService voteService, IAdminService adminService)
         {
             _voteService = voteService;
+            _adminService = adminService;
         }
 
         public async Task<IActionResult> Index(int pageId = 1, string? filter = null, string getType = "all", string orderByType = "date")
@@ -20,17 +23,19 @@ namespace Polling.Controllers.Admin
             return View(result);
         }
 
+        #region Polling
+
         #region Create New Vote
 
         public async Task<IActionResult> CreateVote()
         {
             ViewData["selectGroups"] = await _voteService.GetAllGroups();
-            
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateVote(CreateVoteViewModel model , List<int> selectGroups)
+        public async Task<IActionResult> CreateVote(CreateVoteViewModel model, List<int> selectGroups)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +78,7 @@ namespace Polling.Controllers.Admin
         public async Task<IActionResult> ShowPoll(int voteId)
         {
             var vote = await _voteService.GetVoteDetailsForAdmin(voteId);
-            if(vote == null)
+            if (vote == null)
             {
                 return RedirectToAction("Index");
             }
@@ -92,7 +97,7 @@ namespace Polling.Controllers.Admin
             TempData["voteId"] = voteId;
             ViewBag.Delete = true;
 
-            return View("ShowPoll" , vote);
+            return View("ShowPoll", vote);
         }
 
         [HttpPost]
@@ -109,5 +114,39 @@ namespace Polling.Controllers.Admin
             await _voteService.DeleteVote(voteId);
             return RedirectToAction("Index");
         }
+
+        #endregion
+
+        #region Users management
+
+        [HttpGet]
+        public async Task<IActionResult> ListUsers(int pageId = 1, string? filter = null)
+        {
+            var result = await _adminService.GetUsers(pageId, filter, 8);
+
+            return View(result);
+        }
+
+        public async Task<IActionResult> AddUser()
+        {
+            ViewData["selectGroups"] = await _voteService.GetAllGroups();
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(RegisterViewModel model , int selectedGroup)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["selectGroups"] = await _voteService.GetAllGroups();
+                return View(model);
+            }
+            model.GroupId = selectedGroup;
+            await _adminService.AddUser(model);
+            return View("ListUsers");
+        }
+
+        #endregion
     }
 }

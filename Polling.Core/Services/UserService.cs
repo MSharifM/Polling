@@ -6,12 +6,6 @@ using Polling.Core.Sequrity;
 using Polling.Core.Services.Interfaces;
 using Polling.Datalayer.Context;
 using Polling.Datalayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Polling.Core.Services
 {
@@ -37,12 +31,7 @@ namespace Polling.Core.Services
             return user.GroupId;   
         }
 
-        public async Task AddUser(User user)
-        {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
-        }
-
+        
         public async Task<User> LoginUser(LoginViewModel model)
         {
             string hashPassword = PasswordHelper.EncodePasswordMd5(model.Password);

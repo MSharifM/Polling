@@ -19,44 +19,6 @@ namespace Polling.Controllers.Account
             _userServices = userServices;
         }
 
-        #region Register 
-
-        [HttpGet]
-        [Route("/Register")]
-        public async Task<IActionResult> Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [Route("/Register")]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            User user = new User()
-            {
-                FullName = model.FullName,
-                Email = model.Email,
-                Phone = model.Phone,
-                StudentCode = model.StudentCode,
-                Password = PasswordHelper.EncodePasswordMd5(model.Password),
-                ActiveCode = NameGenerator.GenerateUniqCode(),
-                IsActive = false,
-                IsDelete = false,
-                UserAvatar = "Default.jpg",
-                RegisterDate = DateTime.Now,
-                GroupId = model.GroupId
-            };
-
-           await _userServices.AddUser(user);
-
-            return RedirectToAction("Login");
-        }
-
-        #endregion
-
         #region Login
 
         [Route("/Login")]

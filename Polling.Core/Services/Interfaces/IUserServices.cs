@@ -13,7 +13,6 @@ namespace Polling.Core.Services.Interfaces
         #region Account
 
         Task<User> GetUserByName(string name);
-        Task AddUser(User user);
         Task<User> LoginUser(LoginViewModel model);
         Task<ShowInformationForUsrePanelViewModel> GetUserInformationForUserPanel(string name);
         Task<EditAvatarViewModel> GetUserInformationForEditAvatar(string name);
