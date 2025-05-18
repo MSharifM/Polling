@@ -1,0 +1,185 @@
+﻿@model Polling.Datalayer.Entities.User
+@{
+    ViewData["Title"] = "تأیید حذف کاربر";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .delete-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+        
+        .delete-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .delete-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .delete-warning {
+            background: #fff5f5;
+            color: #9b2c2c;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-right: 3px solid #f56565;
+            font-weight: 500;
+        }
+        
+        .user-info {
+            margin-bottom: 25px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .info-label {
+            width: 150px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-danger {
+            background: #f56565;
+            color: white;
+            border: none;
+        }
+        
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-container">
+        <div class="delete-header">
+            <h1 class="delete-title">تأیید حذف کاربر</h1>
+        </div>
+        
+        <div class="delete-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 5px;">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            آیا از حذف این کاربر اطمینان دارید؟ این عمل غیرقابل بازگشت است.
+        </div>
+        
+        <!-- اطلاعات کاربر -->
+        <div class="user-info">
+            <div class="info-row">
+                <div class="info-label">نام کامل:</div>
+                <div class="info-value">@Model.FullName</div>
+            </div>
+            
+            <div class="info-row">
+                <div class="info-label">کد دانشجویی:</div>
+                <div class="info-value">@Model.StudentCode</div>
+            </div>
+            
+            <div class="info-row">
+                <div class="info-label">شماره موبایل:</div>
+                <div class="info-value">@Model.Phone</div>
+            </div>
+            
+            <div class="info-row">
+                <div class="info-label">رشته تحصیلی:</div>
+                <div class="info-value">@Model.Group.Name</div>
+            </div>
+            
+            <div class="info-row">
+                <div class="info-label">تاریخ ثبت نام:</div>
+                <div class="info-value">@Model.RegisterDate.ToString("yyyy/MM/dd")</div>
+            </div>
+        </div>
+        
+        <!-- دکمه‌های فرم -->
+        <form asp-action="DeleteUser" method="post">
+            
+            <div class="form-actions">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    انصراف
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    حذف کاربر
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

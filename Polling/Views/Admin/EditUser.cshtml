@@ -1,0 +1,215 @@
+﻿@model Polling.Core.DTOs.Admin.EditUserViewModel
+ -->
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+}
+
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .edit-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+
+        .edit-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .edit-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #a5b4fc;
+                box-shadow: 0 0 0 3px rgba(165, 180, 252, 0.3);
+            }
+
+        .text-danger {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+        }
+
+            .radio-item input {
+                margin-left: 10px;
+            }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background: #4338ca;
+            }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+        }
+
+            .btn-secondary:hover {
+                background: #cbd5e0;
+            }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <div class="edit-header">
+            <h1 class="edit-title">ویرایش کاربر</h1>
+        </div>
+
+        <form asp-action="EditUser" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- نام کامل -->
+            <div class="form-group">
+                <label asp-for="FullName" class="form-label">نام کامل</label>
+                <input asp-for="FullName" class="form-control">
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <!-- کد دانشجویی -->
+            <div class="form-group">
+                <label asp-for="StudentCode" class="form-label">کد دانشجویی</label>
+                <input asp-for="StudentCode" class="form-control">
+                <span asp-validation-for="StudentCode" class="text-danger"></span>
+            </div>
+
+            <!-- شماره موبایل -->
+            <div class="form-group">
+                <label asp-for="Phone" class="form-label">شماره موبایل</label>
+                <input asp-for="Phone" class="form-control">
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            @{
+                List<SelectListItem> groups = ViewData["Groups"] as List<SelectListItem>;
+            }
+            <!-- گروه‌های کاربری -->
+            <div class="form-group">
+                <label class="form-label">گروه کاربری</label>
+                <div class="radio-group">
+                    @foreach (var group in groups)
+                    {
+                        <div class="radio-item">
+                            <input type="radio" name="selectedGroup" value="@group.Value" id="group-@group.Value"
+                                   checked="@(group.Value == Model.GroupId.ToString())">
+                            <label for="group-@group.Value">@group.Text</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- دکمه‌های فرم -->
+            <div class="form-actions">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    انصراف
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    ذخیره تغییرات
+                </button>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

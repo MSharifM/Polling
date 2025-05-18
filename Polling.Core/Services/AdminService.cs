@@ -44,6 +44,34 @@ namespace Polling.Core.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task DeleteUser(int id)
+        {
+            var user = await GetUserById(id);
+            user.IsDelete = true;
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task EditUser(EditUserViewModel model , int id)
+        {
+            var user = await GetUserById(id);
+
+            user.FullName = model.FullName;
+            user.Phone = model.Phone;
+            user.StudentCode = model.StudentCode;
+            user.GroupId = model.GroupId;
+            
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+        }
+
+        public Task<User> GetUserById(int id)
+        {
+            return _db.Users
+                .Include(u => u.Group)
+                .FirstOrDefaultAsync(u => u.UserId == id);
+        }
+
         public async Task<Tuple<List<ListUsersForAdminViewModel>, int>> GetUsers(int pageId = 1, string? filter = null, int take = 0)
         {
             if (take == 0)

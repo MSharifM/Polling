@@ -201,7 +201,8 @@
         <div class="page-header">
             <h1 class="page-title">لیست نظرسنجی‌ها</h1>
         </div>
-    <a asp-action="CreateVote" class="btn col-2 btn-outline btn-success">افزودن نظرسنجی جدید</a>
+        <a asp-action="CreateVote" class="btn col-2 btn-outline btn-success">افزودن نظرسنجی جدید</a>
+        <a asp-action="ListUsers" class="btn col-2 btn-outline btn-success">مشاهده کاربران</a>
 
         <!-- بخش فیلترها -->
         <div class="filters-section">
@@ -234,18 +235,17 @@
             </form>
         </div>
 
-        <thead>
-            <tr>
-                <th>عنوان نظرسنجی</th>
-                <th>تاریخ ایجاد</th>
-                <th>تاریخ پایان</th>
-                <th>تعداد نظرات ثبت شده</th>
-                <th>وضعیت فعال بودن</th>
-                <th>عملیات</th>
-            </tr>
-        </thead>
-        <!-- جدول نظرسنجی‌ها -->
         <table class="survey-table">
+            <thead>
+                <tr>
+                    <th>عنوان نظرسنجی</th>
+                    <th>تاریخ ایجاد</th>
+                    <th>تاریخ پایان</th>
+                    <th>وضعیت فعال بودن</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <!-- جدول نظرسنجی‌ها -->
             <section class="terms-items">
                 <div class="row">
                     @foreach (var item in Model.Item1)

@@ -24,11 +24,9 @@
             </span>
         </td>
         <td>
-            <button>
-                <a asp-action="ShowPolls" asp-route-voteId="@Model.VoteId">
-                    شرکت در نظرسنجی
-                </a>
-            </button>
+            <a asp-action="ShowPolls" asp-route-voteId="@Model.VoteId" class="btn btn-outline btn-success">
+                شرکت در نظرسنجی
+            </a>
         </td>
     </tr>
 </tbody>

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Polling.Core.DTOs.Admin;
 using Polling.Core.DTOs.User;
 using Polling.Core.DTOs.Vote;
 using Polling.Core.Services.Interfaces;
+using Polling.Datalayer.Entities;
 
 namespace Polling.Controllers.Admin
 {
@@ -135,7 +137,7 @@ namespace Polling.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(RegisterViewModel model , int selectedGroup)
+        public async Task<IActionResult> AddUser(RegisterViewModel model, int selectedGroup)
         {
             if (!ModelState.IsValid)
             {
@@ -145,6 +147,58 @@ namespace Polling.Controllers.Admin
             model.GroupId = selectedGroup;
             await _adminService.AddUser(model);
             return View("ListUsers");
+        }
+
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var user = await _adminService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("ListUsers");
+            }
+            var model = new EditUserViewModel()
+            {
+                FullName = user.FullName,
+                Phone = user.Phone,
+                StudentCode = user.StudentCode,
+                GroupId = user.GroupId
+            };
+            TempData["userId"] = id;
+            ViewData["Groups"] = await _voteService.GetAllGroups();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model , int selectedGroup)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["Groups"] = await _voteService.GetAllGroups();
+                return View(model);
+            }
+            int userId = (int)TempData["userId"];
+            model.GroupId = selectedGroup;
+            await _adminService.EditUser(model , userId);
+            return RedirectToAction("ListUsers");
+        }
+
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _adminService.GetUserById(id);
+            if (user == null)
+            {
+                return RedirectToAction("ListUsers");
+            }
+            TempData["userId"] = id;
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser()
+        {
+            int userId = (int)TempData["userId"];
+            await _adminService.DeleteUser(userId);
+            return RedirectToAction("ListUsers");
         }
 
         #endregion
