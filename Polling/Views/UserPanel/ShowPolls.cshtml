@@ -226,15 +226,8 @@
             </div>
         </div>
 
-        @* @if (Model.HasVoted) 
-         { 
-            <div class="already-voted">
-                شما قبلاً در این نظرسنجی شرکت کرده‌اید. 
-            </div> 
-         } *@
-
         <!-- نمایش نتایج -->
-       @* @if (Model.Options.Any(o => o.VoteCount > 0))
+        @* @if (Model.Options.Any(o => o.VoteCount > 0))
         {
             <div class="results-title">نتایج نظرسنجی</div>
 
@@ -253,7 +246,14 @@
         }
         *@
         <!-- فرم شرکت در نظرسنجی -->
-        @if (Model.IsActive)
+
+        @if (ViewBag.Participated)
+        {
+            <div class="already-voted">
+                شما قبلاً در این نظرسنجی شرکت کرده‌اید.
+            </div>
+        }
+        else if (Model.IsActive)
         {
             <form asp-action="SubmitVote" method="post">
 
@@ -269,9 +269,9 @@
                                 @if (Model.AllowMultipleSelection)
                                 {
                                     <input type="checkbox" class="option-input"
-                                           name="selectedOptions" 
-                                           value="@Model.Options[i].OptionId"/>
-                                           
+                                           name="selectedOptions"
+                                           value="@Model.Options[i].OptionId" />
+
                                 }
                                 else
                                 {

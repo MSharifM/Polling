@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Polling.Core.DTOs.User;
+using Polling.Core.Services;
 using Polling.Core.Services.Interfaces;
 
 namespace Polling.Controllers.UserPanel
@@ -63,7 +64,7 @@ namespace Polling.Controllers.UserPanel
 
         public async Task<IActionResult> ListPolls(int pageId = 1, string? filter = null, string getType = "all", string orderByType = "date")
         {
-            var result = await _userServices.GetPollsToShowForUser(await _userServices.GetUserGroup(User.Identity.Name), pageId, filter
+            var result = await _userServices.GetPollsToShowForUser(User.Identity.Name ,await _userServices.GetUserGroup(User.Identity.Name), pageId, filter
                 , getType, orderByType, 8);
 
             return View(result);
@@ -76,6 +77,8 @@ namespace Polling.Controllers.UserPanel
             int userGroup = await _userServices.GetUserGroup(User.Identity.Name);
             if (vote.Groups.Any(g => g.GroupId == userGroup))
             {
+                int userId = (await _userServices.GetUserByName(User.Identity.Name)).UserId;
+                ViewBag.Participated = await UserService.IsUserParticipatedInVote(userId, vote.VoteId);
                 TempData["VoteId"] = vote.VoteId;
                 return View(vote);
             }
@@ -90,13 +93,13 @@ namespace Polling.Controllers.UserPanel
         {
             var user = await _userServices.GetUserByName(User.Identity.Name);
 
-            if (selectedOptions == null && selectOption == null)
+            if (selectedOptions.Count == 0 && selectOption == null)
             {
                 ModelState.AddModelError("Error", "لطفا گزینه ای را انتخاب کنید.");
                 return Redirect("ListPolls");
 
             }
-            if (selectedOptions != null)
+            if (selectedOptions.Count != 0)
             {
                 await _userServices.AddUserVote(user.UserId, (int)TempData["VoteId"], selectedOptions);
             }

@@ -24,11 +24,12 @@ namespace Polling.Core.Services.Interfaces
 
         #region Polling
 
-        Task<Tuple<List<ListPollsForShowToUserViewModel> , int>> GetPollsToShowForUser(int userGroup , int pageId = 1
+        Task<Tuple<List<ListPollsForShowToUserViewModel> , int>> GetPollsToShowForUser(string name, int userGroup , int pageId = 1
             , string? filter = null , string getType = "all", string orderByType = "date", int take = 0);
 
         Task AddUserVote(int userId, int voteId , List<int> OptionsId);
         Task<Option> GetOptionById(int id);
+        
 
         #endregion
     }

@@ -11,7 +11,7 @@ namespace Polling.Core.Services
 {
     public class UserService : IUserServices
     {
-        private PollingContext _db;
+        private static PollingContext _db;
 
         public UserService(PollingContext context)
         {
@@ -28,10 +28,10 @@ namespace Polling.Core.Services
         public async Task<int> GetUserGroup(string name)
         {
             var user = await GetUserByName(name);
-            return user.GroupId;   
+            return user.GroupId;
         }
 
-        
+
         public async Task<User> LoginUser(LoginViewModel model)
         {
             string hashPassword = PasswordHelper.EncodePasswordMd5(model.Password);
@@ -130,8 +130,8 @@ namespace Polling.Core.Services
 
         #region Polling
 
-        public async Task<Tuple<List<ListPollsForShowToUserViewModel> , int>> GetPollsToShowForUser(int userGroup, int pageId = 1
-            , string? filter = null, string getType = "all", string orderByType = "date", int take = 0)
+        public async Task<Tuple<List<ListPollsForShowToUserViewModel>, int>> GetPollsToShowForUser(string name,
+            int userGroup, int pageId = 1, string? filter = null, string getType = "all", string orderByType = "date", int take = 0)
         {
             if (take == 0)
                 take = 8;
@@ -166,7 +166,7 @@ namespace Polling.Core.Services
             }
 
             result = result.Include(c => c.Groups).Where(v => v.Groups.Any(g => g.GroupId == userGroup));
-
+            int id = GetUserByName(name).Result.UserId;
             int skip = (pageId - 1) * take;
 
             int pageCount = result.Select(v => new ListPollsForShowToUserViewModel()
@@ -181,11 +181,20 @@ namespace Polling.Core.Services
                 IsActive = v.IsActive,
                 Text = v.Text,
                 Title = v.Title,
-                VoteId = v.VoteId
+                VoteId = v.VoteId,
+                Participated = IsUserParticipatedInVote(id, v.VoteId).Result
             }).Skip(skip).Take(take).ToListAsync();
 
-            return Tuple.Create(query , pageCount);
+            return Tuple.Create(query, pageCount);
         }
+
+        public static async Task<bool> IsUserParticipatedInVote(int userId, int voteId)
+        {
+            var hasVoted = await _db.UsersVotes
+                .AnyAsync(uv => uv.UserId == userId && uv.VoteId == voteId);
+            return hasVoted;
+        }
+
 
         public async Task AddUserVote(int userId, int voteId, List<int> OptionsId)
         {
@@ -202,7 +211,7 @@ namespace Polling.Core.Services
                 option.Count++;
                 _db.Options.Update(option);
             }
-                await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task<Option> GetOptionById(int id)
