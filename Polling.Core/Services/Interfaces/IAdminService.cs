@@ -17,5 +17,10 @@ namespace Polling.Core.Services.Interfaces
         Task EditUser(EditUserViewModel model , int id);
         Task<Tuple<List<ListUsersForAdminViewModel> , int>> GetUsers(int pageId = 1, string? filter = null, int take = 0);
 
+
+        Task<Group> GetGroupById(int id);
+        Task AddGroup(string groupName);
+        Task EditGroup(Group model);
+        Task DeleteGroup(int id);
     }
 }

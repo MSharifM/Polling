@@ -202,5 +202,56 @@ namespace Polling.Controllers.Admin
         }
 
         #endregion
+
+        #region Groups management
+
+        public async Task<IActionResult> ListGroups()
+        {
+            var groups = await _voteService.GetAllGroups();
+            return View(groups);
+        }
+
+        public async Task<IActionResult> AddGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddGroup(string groupName)
+        {
+            if (string.IsNullOrEmpty(groupName))
+            {
+                return View();
+            }
+            await _adminService.AddGroup(groupName);
+            return RedirectToAction("ListGroups");
+        }
+
+        public async Task<IActionResult> EditGroup(int id)
+        {
+            var model = await _adminService.GetGroupById(id);
+            TempData["GroupId"] = id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditGroup(Group model)
+        {
+            model.GroupId = (int)TempData["GroupId"];
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("EditGroup");
+            }
+            await _adminService.EditGroup(model);
+            return RedirectToAction("ListGroups");
+        }
+
+        public async Task<IActionResult> DeleteGroup(int id)
+        {
+            await _adminService.DeleteGroup(id);
+            return RedirectToAction("ListGroups");
+        }
+        #endregion
+
     }
 }

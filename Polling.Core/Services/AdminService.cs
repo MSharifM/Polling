@@ -5,18 +5,14 @@ using Polling.Core.Sequrity;
 using Polling.Core.Services.Interfaces;
 using Polling.Datalayer.Context;
 using Polling.Datalayer.Entities;
-using Polling.Datalayer.Migrations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Polling.Core.Services
 {
     public class AdminService : IAdminService
     {
         private readonly PollingContext _db;
+
+        #region User management
 
         public AdminService(PollingContext db)
         {
@@ -103,5 +99,45 @@ namespace Polling.Core.Services
 
             return Tuple.Create(query, pageCount);
         }
+
+        #endregion
+
+        #region Group management
+
+        public async Task<Group> GetGroupById(int id)
+        {
+            return await _db.Groups.FindAsync(id);
+        }
+
+        public async Task AddGroup(string groupName)
+        {
+            var group = new Group()
+            {
+                Name = groupName,
+            };
+            await _db.Groups.AddAsync(group);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task EditGroup(Group model)
+        {
+            Group group = await _db.Groups.FindAsync(model.GroupId);
+            if (group != null)
+            {
+                group.Name = model.Name;
+                _db.Groups.Update(group);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteGroup(int id)
+        {
+            var group = await GetGroupById(id);
+            group.IsDelete = true;
+            _db.Groups.Update(group);
+            await _db.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }
