@@ -17,13 +17,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    [Authorize]
-    public IActionResult Privacy()
-    {
-        return View();
+        return Redirect("Logout"); //    :-)
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

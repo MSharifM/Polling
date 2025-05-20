@@ -66,7 +66,10 @@ namespace Polling.Controllers.Account
                     {
                         return Redirect(returnUrl);
                     }
-                    return Redirect("Home");
+                    if (user.IsAdmin)
+                        return Redirect("Admin");
+                    else
+                        return Redirect("UserPanel");
                 }
                 //else
                 //{

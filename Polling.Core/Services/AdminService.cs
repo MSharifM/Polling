@@ -34,6 +34,7 @@ namespace Polling.Core.Services
                 IsActive = true,
                 ActiveCode = Guid.NewGuid().ToString(),
                 IsDelete = false,
+                IsAdmin = model.IsAdmin
             };
 
             await _db.Users.AddAsync(user);
@@ -55,6 +56,7 @@ namespace Polling.Core.Services
             user.FullName = model.FullName;
             user.Phone = model.Phone;
             user.StudentCode = model.StudentCode;
+            user.IsAdmin = model.IsAdmin;
             user.GroupId = model.GroupId;
             
             _db.Users.Update(user);
@@ -98,6 +100,15 @@ namespace Polling.Core.Services
             }).Skip(skip).Take(take).ToListAsync();
 
             return Tuple.Create(query, pageCount);
+        }
+
+        public async Task<bool> IsAdmin(string userName)
+        {
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.FullName == userName);
+            if (user.IsAdmin == true)
+                return true;
+
+            return false;
         }
 
         #endregion

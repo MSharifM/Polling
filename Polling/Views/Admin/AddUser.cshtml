@@ -203,6 +203,11 @@
                 <span asp-validation-for="RePassword" class="text-danger"></span>
             </div>
 
+            <div class="radio-item">
+                <input type="checkbox" id="admin" asp-for="IsAdmin" name="IsAdmin" value="true" class="form-check-input">
+                <label for="admin" class="form-check-label">ادمین</label>
+            </div>
+
             @{
                 List<SelectListItem> groups = ViewData["selectGroups"] as List<SelectListItem>;
             }
@@ -214,8 +219,8 @@
                     {
                         @foreach (var group in groups)
                         {
-                        <div class="radio-item">
-                            <input type="radio" name="selectedGroup" value="@group.Value" id="group-@group.Value" class="form-check-input">
+                            <div class="radio-item">
+                                <input type="radio" name="selectedGroup" value="@group.Value" id="group-@group.Value" class="form-check-input">
                                 <label for="group-@group.Value" class="form-check-label">@group.Text</label>
                             </div>
                         }

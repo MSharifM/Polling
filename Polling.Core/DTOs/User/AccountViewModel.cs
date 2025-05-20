@@ -64,6 +64,9 @@ namespace Polling.Core.DTOs.User
         [Compare("Password", ErrorMessage = "کلمه عبور  با تکرار آن برابر نیست")]
         public string RePassword { get; set; }
 
+        [Display(Name ="ادمین")]
+        public bool IsAdmin { get; set; }
+
         public int GroupId { get; set; }
     }
 

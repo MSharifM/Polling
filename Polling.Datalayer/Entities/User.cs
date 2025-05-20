@@ -64,6 +64,9 @@ namespace Polling.Datalayer.Entities
         [Display(Name = "تاریخ ثبت نام")]
         public DateTime RegisterDate { get; set; } = DateTime.Now;
 
+        [Display(Name ="ادمین")]
+        public bool IsAdmin { get; set; } = false;
+
         public bool IsDelete { get; set; } = false;
 
 

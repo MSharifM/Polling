@@ -44,5 +44,8 @@ namespace Polling.Core.DTOs.Admin
         [MinLength(7, ErrorMessage = "{0} نمی تواند کمتر از {1} کاراکتر باشد.")]
         [RegularExpression(@"^\d+$", ErrorMessage = "شماره دانشجویی باید فقط شامل عدد باشد.")]
         public string StudentCode { get; set; }
+
+        [Display(Name ="ادمین")]
+        public bool IsAdmin { get; set; }
     }
 }

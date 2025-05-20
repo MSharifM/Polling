@@ -167,6 +167,11 @@
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
+            <div class="radio-item">
+                <input type="checkbox" id="admin" asp-for="IsAdmin" class="form-check-input">
+                <label for="admin" class="form-check-label">ادمین</label>
+            </div>
+
             @{
                 List<SelectListItem> groups = ViewData["Groups"] as List<SelectListItem>;
             }

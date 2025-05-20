@@ -2,11 +2,13 @@
 using Polling.Core.DTOs.Admin;
 using Polling.Core.DTOs.User;
 using Polling.Core.DTOs.Vote;
+using Polling.Core.Sequrity;
 using Polling.Core.Services.Interfaces;
 using Polling.Datalayer.Entities;
 
 namespace Polling.Controllers.Admin
 {
+    [PermissionChecker()]
     public class AdminController : Controller
     {
         private IVoteService _voteService;
@@ -161,7 +163,8 @@ namespace Polling.Controllers.Admin
                 FullName = user.FullName,
                 Phone = user.Phone,
                 StudentCode = user.StudentCode,
-                GroupId = user.GroupId
+                GroupId = user.GroupId,
+                IsAdmin = user.IsAdmin,
             };
             TempData["userId"] = id;
             ViewData["Groups"] = await _voteService.GetAllGroups();
@@ -169,8 +172,9 @@ namespace Polling.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(EditUserViewModel model , int selectedGroup)
+        public async Task<IActionResult> EditUser(EditUserViewModel model , int selectedGroup, bool isadmin)
         {
+            model.IsAdmin = isadmin;
             if (!ModelState.IsValid)
             {
                 ViewData["Groups"] = await _voteService.GetAllGroups();
