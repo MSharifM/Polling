@@ -29,7 +29,6 @@ namespace Polling.Core.Services.Interfaces
 
         Task AddUserVote(int userId, int voteId , List<int> OptionsId);
         Task<Option> GetOptionById(int id);
-        
 
         #endregion
     }

@@ -45,7 +45,7 @@ namespace Polling.Core.Services
                 Text = model.Text,
                 AllowMultipleSelection = model.AllowMultipleSelection,
                 IsActive = model.IsActive,
-                Groups = _db.Groups.Where(g => groupsId.Contains(g.GroupId)).ToList()
+                Groups = _db.Groups.Where(g => groupsId.Any(i =>i == g.GroupId)).ToList()
             };
 
             await _db.Votes.AddAsync(vote);

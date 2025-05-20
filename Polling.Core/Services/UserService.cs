@@ -182,16 +182,16 @@ namespace Polling.Core.Services
                 Text = v.Text,
                 Title = v.Title,
                 VoteId = v.VoteId,
-                Participated = IsUserParticipatedInVote(id, v.VoteId).Result
+                Participated = IsUserParticipatedInVote(id, v.VoteId)
             }).Skip(skip).Take(take).ToListAsync();
 
             return Tuple.Create(query, pageCount);
         }
 
-        public static async Task<bool> IsUserParticipatedInVote(int userId, int voteId)
+        public static bool IsUserParticipatedInVote(int userId, int voteId)
         {
-            var hasVoted = await _db.UsersVotes
-                .AnyAsync(uv => uv.UserId == userId && uv.VoteId == voteId);
+            var hasVoted = _db.UsersVotes
+                .Any(uv => uv.UserId == userId && uv.VoteId == voteId);
             return hasVoted;
         }
 

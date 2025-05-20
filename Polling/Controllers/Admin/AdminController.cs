@@ -146,7 +146,7 @@ namespace Polling.Controllers.Admin
             }
             model.GroupId = selectedGroup;
             await _adminService.AddUser(model);
-            return View("ListUsers");
+            return RedirectToAction("ListUsers");
         }
 
         public async Task<IActionResult> EditUser(int id)

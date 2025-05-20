@@ -64,7 +64,8 @@ namespace Polling.Controllers.UserPanel
 
         public async Task<IActionResult> ListPolls(int pageId = 1, string? filter = null, string getType = "all", string orderByType = "date")
         {
-            var result = await _userServices.GetPollsToShowForUser(User.Identity.Name ,await _userServices.GetUserGroup(User.Identity.Name), pageId, filter
+            var group = await _userServices.GetUserGroup(User.Identity.Name);
+            var result = await _userServices.GetPollsToShowForUser(User.Identity.Name ,group, pageId, filter
                 , getType, orderByType, 8);
 
             return View(result);
@@ -78,7 +79,7 @@ namespace Polling.Controllers.UserPanel
             if (vote.Groups.Any(g => g.GroupId == userGroup))
             {
                 int userId = (await _userServices.GetUserByName(User.Identity.Name)).UserId;
-                ViewBag.Participated = await UserService.IsUserParticipatedInVote(userId, vote.VoteId);
+                ViewBag.Participated = UserService.IsUserParticipatedInVote(userId, vote.VoteId);
                 TempData["VoteId"] = vote.VoteId;
                 return View(vote);
             }
